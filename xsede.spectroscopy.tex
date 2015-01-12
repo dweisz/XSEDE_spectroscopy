@@ -1,0 +1,337 @@
+\documentclass[11pt,preprint]{aastex}
+
+%compact captions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[font=small,labelfont=bf, textfont=it, justification=justified]{caption}
+%\DeclareCaptionFormat{ruleformat}{\baselineskip0.2cm\hrulefill\\\noindent#1#2#3{\hrulefill}}
+%\captionsetup[figure]{format=ruleformat}
+\setlength{\textfloatsep}{0pt}
+%\setlength{\abovecaptionskip}{-10pt}
+\setlength{\floatsep}{2pt}
+
+\usepackage{verbatim}
+\usepackage{rotating}
+\usepackage{lscape}
+\usepackage{subfigure}
+\usepackage{natbib}
+\usepackage{arydshln}
+
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue, pdftex, bookmarks=true, linktocpage=true, hyperindex=true]{hyperref}
+\usepackage{breakurl}
+
+\providecommand{\xxxx}{{\color{red} ~XXXX~}}
+\providecommand{\xsede}{XSEDE~}
+\providecommand{\eg}{e.g.,~}
+\providecommand{\ie}{\textit{i.e.},~}
+
+\begin{document}
+
+\section*{\Large Toward Measuring the Stellar Initial Mass Function in the Distant Universe}
+
+
+\begin{center}
+Principle Investigator: Dr. Daniel Weisz\\
+University of Washington
+\end{center}
+
+{\small
+{\bf abstract:}
+Four years ago, we initiated the single most ambitious mapping project
+ever taken with the Hubble Space Telescope: to produce a map of every
+luminous star in the nearby Andromeda Galaxy (M31) in ultraviolet,
+optical, and near-infrared wavelengths. These $>$117,000,000 stars
+encode the history of the galaxy and the rich, detailed physics that
+drives stellar and galactic evolution. Using our first successful XSEDE
+program, our collaboration pioneered spatially mapping the recent
+history of star formation throughout M31, making a ``movie" of the past
+star formation of the galaxy during the last half a Gigayear.  We now
+propose to extend this movie back to the oldest ages by using a
+forward modeling approach that reproduces the observed colors and
+brightnesses of stars in small cells across the galaxy. We have
+developed both a parameterized model that responds to the added
+complexity of extending our age coverage, and an optimized search
+strategy that allows us to efficiently scan parameter space.  We have
+matched this project to specific XSEDE resources, have meticulously
+optimized our strategy, and have benchmarked our specific analysis
+pipeline.  Combining the computational power of XSEDE with the
+unprecedented number of stars cataloged by our large area survey will
+allow us to derive the most precise spatially-resolved star formation
+history of M31 throughout cosmic time, probing the earliest epochs of
+galaxy formation }
+
+
+\section{Background \& Motivation}
+\label{sec:overview}
+
+A primary goal of astrophysics is to decipher the history of the universe.  Among the most widespread approaches to measuring how the universe has evolved is through the study of galaxies.  The brightness and color of a galaxy encodes information about its age, rate of star formation, and metal content.  By surveying large collections of galaxies at different cosmic epochs, we are able to probe how the state of the universe has changed as a function of time, i.e., 'cosmology'.  Over the past decade, the use of large sample of galaxies as cosmological indicators has become one of the largest fields in all of astrophysics, motivating on-going observation programs such as the Sloan Digital Sky Survey (SDSS), which has observed $>10^6$ galaxies, the Hubble Ultra-Deep field, imaging the first galaxies to form in the universe, and the Large Synoptic Survey Telescope, which is poised to observe more than 1 billion galaxies in the next decade.
+
+Despite the wealth of galaxy observations, interpreting their brightness and color is highly model dependent.  Key assumptions about a galaxy's star formation history (SFH), dust content, metallicity, and stellar initial mass function (IMF) as necessary due to the limited information content of the observations and degeneracies between various model parameters.  Commonly used approximations for SFH, dust, and metallicity have been reasonably well-vetted in the local universe, where galaxies can be resolved into individual star forming regions, which allow us to relax assumptions about these parameters.
+
+In contrast, our knowledge of the stellar IMF is much less certain.  The stellar IMF describes the relative distribution of stellar masses for a group of stars born at the same time.  In principle, measuring the IMF is a straight-forward exercise in counting the relative number of stars at different masses in a star cluster, i.e., a co-eval stellar population.  However, a number of complicating observational and physical effects (for example, the dynamical evolution of a cluster can preferentially effects stars of a particular mass) can significantly bias this measurement.  As a result, after nearly 50 years of study, the IMF remains one of the most heavily debated topics in astronomy.  Consequently, the IMF is among one of the most uncertain parameter in our quest to understand the evolution of the universe.
+
+Current tensions over the IMF revolve around whether or not it is universal.  The universal IMF view holds posits that the initial mass spectrum of stars at birth is insensitive to local star-formation conditions such as pre-natal gas-density, chemical composition of the gas, hardness of the local radiation field, etc.  However, most theories of star formation predict that opposite, namely that the IMF should be sensitive to local star-formation conditions.
+
+Observations to date have been remarkably ambiguous.  On one hand, star counts in local galaxies exhibit $>1$dex in scatter, but appear to have similar ``average'' values when studied over a sufficiently large ensemble.  However, there are only a handful of galaxies in which stars can be directly counted, and they do not span a large dynamic range in star-forming conditions (e.g., gas density, star formation rate).  On the other hand, studies of more distant and diverse galaxies paint a picture in which the IMF does systematically vary with respect to environment.  Recent work by XXX, has shown that the IMF for stars less than the mass of the sun (1\msun) in massive elliptical galaxies does depend on the mass of the galaxy.  Similarly, low-mass, low-metallicity dwarf galaxies potentially exhibit a deficit of massive stars relative to universal IMF predictions, but interpretation is complicated by the degenerate effects of SFH.  
+
+As a consequence, the most studies of distant galaxies are forced to assume a universal IMF based on the very local universe.  While it is generally acknowledged this may be a poor approximation, few concrete alternatives exist.  The primary aim of this program is to resolve this tension by providing a path to directly measuring the IMF in distant galaxies.
+
+
+
+
+
+
+
+
+%The high mass stellar initial mass function (IMF) underpins virtually all of extragalactic astrophysics. Stars above a few solar masses are largely responsible for the chemical enrichment and spectral energy distribution blueward of the near-IR for all star-forming galaxies. Consequently, the exact numbers and mass distributions of high mass stars are central to the interpretation of integrated light from distant galaxies; chemical evolution models; the frequency of core-collapse supernovae; the evolution of star formation rates over cosmic time;  the efficiency of star formation on galactic scales; and the effects of stellar feedback on dark matter potentials (e.g., Leitherer et al.\ 1999, Bruzual \& Charlot 2003, Smartt 2009, Madau et al.\ 1996, Schmidt 1959, Kennicutt 1989, Leroy et al.\ 2008, Governato et al.\ 2010).
+%%\citep[e.g.,][]{lei99, bru03, sma09, mad96, sch59, ken89, ler08, gov10}.  
+%
+%Despite its widespread importance, the high mass IMF slope ($M\gtrsim$1\msun; e.g., Kroupa et al.\ 2001) remains poorly constrained.   Within the Local Group (LG), measurements of the IMF slope from resolved star counts exhibit scatter of $\sim$ 0.5 dex (e.g., Bastian et al.\ 2010). Similarly, IMF constraints from integrated light studies in nearby dwarf galaxies report conflicting evidence for systematically steep IMF slopes (e.g., Lee etl al.\ 2009, Meurer et al.\ 2009, Weisz et al.\ 2012) and flatter IMF slopes for galaxies with extremely high star formation rates and gas densities  (e.g., starbursts; Elmegreen 2005, Weidner et al.\ 2011).  Such uncertainties in the IMF slope introduce significant systematics into interpreting the higher redshift universe (e.g., Conroy et al.\ 2009), and are incapable of differentiating between star formation models that result in a universal or environmentally dependent IMF (e.g., McKee \& Ostriker 2007, Weidner et al.\ 2005). Each IMF model presents a drastically different view of how galaxies evolve (e.g., Haas et al.\ 2010), and carries significant implications for interpreting the current (e.g., GOODS) and the next generation (e.g., JWST, LSST) observations of the early universe (e.g., Dav\'{e} 2008, Zackrisson et al.\ 2011, Narayanan \& Dav\'{e} 2012).  
+%
+%To resolve uncertainty in the current high mass IMF, we are systematically measuring the IMF in M31 by counting resolved stars in stellar clusters that have been observed as part of the Panchromatic Hubble Andromeda Treasury program (PHAT; Dalcanton et al.\ 2012).  This multi-cycle HST program has acquired near-UV through near-IR imaging of individual stars in over $\sim$ 1000 young clusters  ($\lesssim$ 100 Myr; Johnson et al.\ 2012) in M31, providing a definitive dataset needed to both systematically constrain the IMF in an L$_{\star}$ galaxy and to anchor other IMF measurement techniques that can be applied to more distant environments where resolved star counts are not available (e.g., spectroscopy).  
+%
+%While our work in M31 will provide a single definitive IMF measurement, it is unlikely to address high mass IMF variations as a function of environment.  Like the rest of the LG, M31 contains only a handful regions with high gas densities and/or star formation rates that are common at higher redshifts and are associated with significant and systematic departures from a universal high mass IMF slope (e.g., Weidner et al.\ 2011).  Exploring the IMF in such extreme environments necessitates studying galaxies well beyond the LG, where individual stars can no longer be resolved, and the best constraints will come from integrated spectra of young star clusters.
+
+
+
+
+
+
+%Four years ago, we started the single most ambitious mapping project ever undertaken
+%with the Hubble Space Telescope (hereafter ``HST'') -- to produce a map of every
+%single luminous star in the nearby Andromeda Galaxy (``M31''), in ultraviolet
+%(UV), optical, and near-infrared (NIR) wavelengths. This survey -- ``The
+%Panchromatic Hubble Andromeda Treasury'' \citep[PHAT;][]{dalcanton2012b} -- has
+%produced multi-wavelength measurements for $>$0.1 billion stars, a number that is only rivaled by extensive surveys of our own Milky Way. The brightnesses and colors of these stars encode a wealth of information about the
+%history of the galaxy and the rich, detailed physics that drives stellar and
+%galactic evolution.  
+%
+%A primary scientific goal in quantifying the evolution of galaxies is
+%determining a galaxy's star formation history (SFH), defined as the temporal
+%evolution of the formation rate of stars (SFR). The increasing number of HST
+%programs that resolve individual stars of nearby systems has initiated
+%quantitative investigations of the SFHs of many systems \citep[\eg][]{Chiosi1989b,
+%Aparicio1990a, Mould1997f, Mighell1992a, Smecker-Hane1994a, Tolstoy1995a, Mighell1997b}.  However, virtually all such studies have been limited to small, chemically deficient systems that are not representative of most star formation in the universe.  Thus, by measuring the SFH of M31, our program will constrain the specific evolution of M31 and shed light into how the bulk of stars and galaxies in the universe formed and evolved.
+%
+%In practice, measuring SFHs is a challenging task.  Even with our extended wavelength coverage, degeneracies in the physical properties of stars such as age and chemical composition necessitate detailed modeling in order to accurately recover a SFH.  Additional modeling complexity arises due to factors such as observational effects, unknown amounts of obscuring dust and gas along the line-of-sight, and inherent uncertainties in the models of stellar physics, which all must be accounted for to ensure robust SFH measurements.  
+%
+%SFHs are measured through a statistical likelihood method that compares the 
+%distributions of colors and luminosities of observed stars with those generated from
+%synthetic stellar models. The main challenge in this process resides in selecting the
+%most likely SFH from among a set of plausible solutions, given the thousand of possible combinations of physical parameters (i.e., all permutations of age, metallicity, dust, etc.).  In addition, the robustness of the solution must also be quantified for random uncertainties due to the nature of the observations and systematic uncertainties due to the underlying stellar models.  
+%
+%Exploring this complex likelihood space demands computational power that can handle exponential increases in CPU time due to additional model parameters.  In our previous program, \xsede program (TG-AST130057) we narrowed down this vast space by focusing on the recent (within the last 500 Myr) SFHs of the Andromeda Galaxy.  This enabled a number of qualitatively new scientific investigations that we describe below.  However, these results are only limited to the most recent $\sim$ 4\% of the galaxy's age, and miss out on the vast majority of Andromeda's history. With this proposal, we are requesting the time needed to extend this analysis to spatially and temporally reconstruct the SFH for the remaining 96\% of Andromeda's history, allowing us to place it into a full cosmological context.
+%
+%The scientific scope of this project and data demands are unprecedented in astronomy.  Fortunately, \xsede provides many of the resources needed to facilitate
+%our science program.   Through extensive testing, both with our
+%existing local computational resources and with our previous \xsede allocation,
+%we have fully matched our science project to specific \xsede resources,
+%meticulously benchmarked our SFH analysis pipeline, and carefully mapped
+%pathways that will lead to publications in peer-reviewed journals. Below, we
+%briefly provide the scientific context of our program, our previous achievements,
+%and provide a detailed \xsede renewal allocation request in order to achieve our
+%project.  Our request is summarized in Table 1.
+
+
+%In practice, however, the likelihood of the data with a particular model can
+%only be calculated if one has the data, the uncertainties, and this particular
+%model fully specified. This last condition has led to the almost exclusive use
+%of parametric SFH in the literature. However, the best model according to the
+%likelihood is not necessarily a ``good'' approximation to the true SFH, nor even
+%a unique choice.  To derive a robust SFH with well-characterized uncertainties,
+%exploring the entire parameter space is an absolutely necessary step.
+
+
+%Unfortunately, the needed exploration requires computational power that
+%exponentially increases with the complexity of the models, as the volume of
+%parameter space that must be explored scales dramatically with an increasing
+%number of parameters.  Our previous \xsede program (TG-AST130057) allowed us to
+%successfully map the recent SFH in the Andromeda Galaxy, but only by drastically
+%reducing the number of parameters by restricting our analysis to a small
+%fraction of the age of the galaxy.  With this proposal, we are requesting the
+%time needed to extend this analysis to the entirety of cosmic time.
+
+
+
+\section{Measuring the High-Mass IMF in the Distant Universe}
+
+Stars more massive than 1 \msun are entirely responsible for the observed luminosities and colors of star-forming galaxies.  Thus, it is this IMF in this mass range that we focus on measuring.  
+
+Our approach to measuring the IMF in distant galaxies is to use the integrated spectra of young star clusters. The full optical spectrum of a young ($<$ 50 Myr) star cluster contains significant information about the slope of the high mass IMF.  The shape of the blue continuum and size of spectral features (e.g., nebular emission, the Balmer jump) are sensitive to the slope of the high mass IMF, whereas conventional analysis of normalized spectrophotometric indices (e.g., Lick indices) are known to be insensitive to IMF variations \citep[e.g.,][]{kol08}.  We provide a more detailed description of this technique in \S \ref{XXX}.  
+
+\subsection{Validating Spectroscopic IMF constraints in M31}
+
+The first phase of our program is to validate our spectroscopic IMF constraints against `gold standard' IMF measurements from resolved star counts.  As part of the Panchromatic Hubble Andromeda Treasury, a 4 year Hubble Space Telescope campaign to resolve stars in our closest neighbor, the Andromeda galaxy, PI Weisz has measured the IMF in $>$500 resolved star clusters.  Concurrently, we have also acquired high fidelity spectra of $\sim$ 50 of these same star clusters using the 6.5m Multi-Mirror Telescope in Arizona and the 10m Keck Telescope in Hawaii.  
+
+We will measure the IMF of each cluster from its integrated spectrum and compare it to the ground-truth value derived from resolved star counts.  These two methods should provide consistent IMF measurements, providing key empirical validation of our approach.
+
+
+\subsection{The First IMF Measurement in NGC~628}
+
+NGC~628 is an ideal target for a pilot study.  It is a nearby (D $\sim$ 9 Mpc), face-on spiral galaxy that hosts a rich young cluster population (Larsen et al. 1999). It has a recent star formation rate (SFR) of $\sim$ 2- 3 \msun /yr (Sanchez et al.\ 2011) making it an excellent Milky Way analog.  Further, NGC~628 hosts the highest frequency of recent supernovae (SNe; 3 in the last decade;  2002ap, 2003gd, 2013ej) of any galaxy within 10 Mpc.  This high recent SNe rate may indicate that NGC 628 has a higher than normal expected massive star population, which could be due to a recent burst or the possibility of a top-heavy IMF that could also produce a larger number of massive SNe progenitors relative to a standard IMF.
+
+Studying the IMF in NGC~628 provides a nice comparison for our ongoing IMF work in M31.  Compared to M31, NGC~628 is more actively forming stars 3 vs. 0.5 \msun\ / yr), is located in the blue cloud instead of the green valley, and has clear undisturbed spiral morphology, which is more typical than the star-forming `rings' of M31.  NGC~628 also provides a better observational target for this study. M31 hosts only a handful of massive young clusters ($\sim$ 10$^4$ \msun).  Lower mass clusters are subject to stochastic sampling of the IMF effects that are challenging to efficiently include spectrophotometric fitting.  Measuring the IMF in higher mass clusters mitigates stochastic IMF sampling, providing more secure IMF determinations.
+
+This program is the first step in a larger planned LRIS survey to systematic search for environmentally sensitivity of the upper IMF.  NGC~628 is an excellent template in which we can learn about the IMF in a Milky Way analog, demonstrate the capabilities of this approach to the broader community, and efficiently enable us to refine our reduction and analysis pipelines (e.g., LRIS exposure times, HST photometric reductions, etc) before pursuing a larger systematic LRIS study of the IMF.
+
+
+
+\section{Potential Science Impact}
+
+
+
+\section{Computational Procedure}
+
+
+\section{Code Description}
+
+Information about the properties of a stellar cluster -- its age,
+metallicity, total stellar mass, and reddening by dust among many
+others -- is contained in the detailed spectrum and the broadband SED
+of the cluster. Our code performs inference of these star cluster
+parameters by comparing model spectra and photometry to observations
+for a broad range of model parameters.  This is accomplished in the
+framework of a likelihood function for the data given the model
+parameters.  
+
+The high dimensionality of the parameter space, the desire to robustly
+infer degeneracies between the parameters, the presence of informative
+prior information about the parameters, and the need marginalize over
+``nuisance'' parameters all lead us to a Bayesian methodology based on
+Markov Chain Monte Carlo (MCMC) sampling of the likelihood
+function. The combination of photometric and spectroscopic information
+requires a flexible noise model to account for spectroscopic
+calibration uncertainties.
+
+The heart of our star cluster modeling code consists of the
+\texttt{FSPS} stellar population synthesis code \citep{fsps}, combined
+with a flexible spectroscopic calibration model.  For the MCMC
+sampling we are using the affine-invariant ensemble sampler
+\texttt{emcee} \citep{emcee} which enables the likelihood function
+evaluations to parallelized across a large number CPUs. The main
+calculations of \texttt{FSPS} are done in Fortran, but the code is
+wrapped in Python.  \texttt{emcee} is written in Python and uses
+\texttt{mpi4py} to distribute likelihood calcualtions across CPUs.
+
+\subsection{Star cluster model}
+For each set of model parameters a star cluster model must be
+generated and compared to the data. The star cluster model is
+comprised of a physical model for the spectrum and broadband SED of
+and a model for the instrumental calibration.  The physical model is
+generated using the FSPS stellar population synthesis code, which
+combines tabulated model stellar spectra according to weights
+determined from tabulated stellar evolutionary tracks and an initial
+mass function.  The FSPS code additionally calculates the reddening
+due to dust and convolves the spectrum with a broadening function
+representing the instrumental spectral resolution.
+
+The model generation takes approximately 1s on 
+
+\subsubsection{Calibration modeling}
+The absolute flux calibration of spectroscopic data is generally
+inferior to that of photometric data.  While spectroscopic features
+such as absorption line depths provide substantial information about
+the stellar population parameters, large scale features in the
+observed spectrum and its overall normalization are often affected by
+substantial (multiplicative) calibration uncertainties. In order to
+simultaneously model the observed spectra and the photometry we have
+included a very flexible spectroscopic calibration model based on a
+combination of a low-order polynomial function of wavelength and a
+Gaussian Process.
+
+The low order polynomial corresponds to gross features in the
+calibration as a function of wavelength, while the Gaussian Process
+corresponds to smaller scale deviations away from the polynomial,
+which can be thought of as covariant uncertainties on the fluxes of
+datapoints close in wavelength.
+
+Determining the likelihood in the presence of the covariant
+uncertainties requires inverting $N \times N$ matrices, where $N$ is
+the number of wavelength points.  This is accomplished using Cholesky
+decompositions, as implemented in \texttt{Scipy}.  For our data,
+N$\sim 2500$.  On Stampede the matrix inversion takes approximately 1s
+on a single processor, using the linked Intel MKL library.
+
+\subsection{MCMC}
+For our MCMC sampling we are using the code \texttt{emcee}.  This code
+implements an affine-invariant ensemble sampler \citep{goodman_weare}
+which is based on an ensemble of ``walkers'' in parameter space that,
+at each iteration of the sampler, are used to generate new proposal
+positions in parameter space.  This eliminates the need for
+hand-tuning of the proposal length scales.  Additionally, the
+likelihood calculations for the different walkers at a given iteration
+can be simply parallelized.
+
+Parallelization is accomplished as follows. The parameter position of
+each walker is sent to a separate processor for the likelihood
+evaluation. The likelihoods are then collected and used to generate
+new proposed parameter positions for each walker, and a new iteration
+is begun.  The density of walker positions constitutes an
+approximation to the posterior probability distribution for the
+parameters.
+
+Since the run time of our code is dominated by the likelihood
+calculations, this parallelization scheme results in very good scaling
+with the number of processors, as long as the number of walkers is
+larger than the number of processors.  The only data being
+communicated between processors are vectors of parameter positions and
+the corresponding likelihood (scalars).
+
+
+\section{Computational Procedure}
+
+\subsection{Observational Data}
+Preprocessing and uploading to Stampede
+
+\subsection{Job submission}
+We will submit a separate job for each cluster spectrum. normal queue
+
+\subsection{Job details}
+Each CPU loads a copy of the likelihood function into memory,
+including the FSPS star cluster modelling code and the spectroscopic
+calibration model.
+
+For each spectrum, an initial round of optimization of the likelihood
+function (actually the posterior probability function) is used to find
+the approximate maximum likelihood. This optimization uses Powell's
+method as implemented in \texttt{Scipy}, though we are investigating
+more efficient algorithms. The optimization is started from as many
+positions as there are CPUs available in the job, with each CPU
+performing one realization of the optimization.  Thus while increasing
+the number of processors does not speed up this phase of the code, it
+does substantially reduce the chance of becoming tapped in a local
+minimum.
+
+After the separate optimizations have each converged or reached a
+maximum number of iterations, the parameters corresponding to the
+global minimum are used as a central location for the MCMC sampling.
+An ensemble of ``walkers'' is then generated centered on this location
+and evolved forward.  The resulting 
+
+\subsection{Post-Processing}
+The stored walker positions are transferred to local servers to run
+our custom diagnostic and visualization software.  In cases where the
+walkers in the sampler have not converged to a stationary distribution
+in parameter space, we can restart the sampler from the last ensemble
+of positions, thus taking advantage of previous computations.  We are
+investigating techniques for robust online assesment of sampler
+convergence.
+
+
+\section{Requested Resources}
+Our tests indicate that fro each spectrum approximately X iterations
+of Y walkers are required for convergence of a sampler
+
+
+
+
+% \end{deluxetable}
+
+\clearpage
+
+\include{team}
+
+\bibliographystyle{apj}
+\bibliography{references}
+
+
+
+\end{document}
