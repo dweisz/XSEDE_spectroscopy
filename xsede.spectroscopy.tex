@@ -62,106 +62,35 @@ galaxy formation }
 \section{Background \& Motivation}
 \label{sec:overview}
 
-A primary goal of astrophysics is to decipher the history of the universe.  Among the most widespread approaches to measuring how the universe has evolved is through the study of galaxies.  The brightness and color of a galaxy encodes information about its age, rate of star formation, and metal content.  By surveying large collections of galaxies at different cosmic epochs, we are able to probe how the state of the universe has changed as a function of time, i.e., 'cosmology'.  Over the past decade, the use of large sample of galaxies as cosmological indicators has become one of the largest fields in all of astrophysics, motivating on-going observation programs such as the Sloan Digital Sky Survey (SDSS), which has observed $>10^6$ galaxies, the Hubble Ultra-Deep field, imaging the first galaxies to form in the universe, and the Large Synoptic Survey Telescope, which is poised to observe more than 1 billion galaxies in the next decade.
+A primary goal of astrophysics is to decipher the history of the universe.  Among the most promising approaches has been through the study of galaxies across cosmic time. A galaxy's brightness and color encodes information about its age, rate of star formation, and metal content.  By surveying large collections of galaxies at different cosmic look back times, we can measure how the universe has changed as a function of time.  
 
-Despite the wealth of galaxy observations, interpreting their brightness and color is highly model dependent.  Key assumptions about a galaxy's star formation history (SFH), dust content, metallicity, and stellar initial mass function (IMF) as necessary due to the limited information content of the observations and degeneracies between various model parameters.  Commonly used approximations for SFH, dust, and metallicity have been reasonably well-vetted in the local universe, where galaxies can be resolved into individual star forming regions, which allow us to relax assumptions about these parameters.
+The use of galaxies as cosmological tools has proliferated over the past two decades.  Large, systematic surveys such as Sloan Digital Sky Survey (SDSS) and the Hubble Ultra-Deep field have provided precise measurements for millions of galaxies back to the genesis of galaxy formation.  The success of these programs has motivated the next-generation of astronomical facilities such as the Large Synoptic Survey Telescope, which will survey more than 1 billion galaxies, and the James Webb Space Telescope, which promises to directly detect the first galaxies.
 
-In contrast, our knowledge of the stellar IMF is much less certain.  The stellar IMF describes the relative distribution of stellar masses for a group of stars born at the same time.  In principle, measuring the IMF is a straight-forward exercise in counting the relative number of stars at different masses in a star cluster, i.e., a co-eval stellar population.  However, a number of complicating observational and physical effects (for example, the dynamical evolution of a cluster can preferentially effects stars of a particular mass) can significantly bias this measurement.  As a result, after nearly 50 years of study, the IMF remains one of the most heavily debated topics in astronomy.  Consequently, the IMF is among one of the most uncertain parameter in our quest to understand the evolution of the universe.
+Yet, despite the wealth of galaxy observations, how we translate their observed light into physical quantities (e.g., mass, metallicity) remains rudimentary.  Typical observations of a distant, unresolved galaxy consist a handful of fluxes measured at different wavelengths that sample the galaxy's spectral energy distribution (SED).  Physically motivated models of galaxies contain many more parameters than typical data points, resulting in degeneracies between the parameters. To mitigate these degeneracies, key assumptions about a the form of a galaxy's star formation history (SFH), dust content, and stellar initial mass function (IMF) are necessary.  
 
-Current tensions over the IMF revolve around whether or not it is universal.  The universal IMF view holds posits that the initial mass spectrum of stars at birth is insensitive to local star-formation conditions such as pre-natal gas-density, chemical composition of the gas, hardness of the local radiation field, etc.  However, most theories of star formation predict that opposite, namely that the IMF should be sensitive to local star-formation conditions.
+The validity of these assumptions can usually be tested using detailed observations of resolved galaxies.  For example, the dust distribution of hundreds of local galaxies have been used to explore multiple forms of dust laws, which appear to provide good descriptions of more distant systems.
 
-Observations to date have been remarkably ambiguous.  On one hand, star counts in local galaxies exhibit $>1$dex in scatter, but appear to have similar ``average'' values when studied over a sufficiently large ensemble.  However, there are only a handful of galaxies in which stars can be directly counted, and they do not span a large dynamic range in star-forming conditions (e.g., gas density, star formation rate).  On the other hand, studies of more distant and diverse galaxies paint a picture in which the IMF does systematically vary with respect to environment.  Recent work by XXX, has shown that the IMF for stars less than the mass of the sun (1\msun) in massive elliptical galaxies does depend on the mass of the galaxy.  Similarly, low-mass, low-metallicity dwarf galaxies potentially exhibit a deficit of massive stars relative to universal IMF predictions, but interpretation is complicated by the degenerate effects of SFH.  
+However, similar tests have not been possible with the stellar IMF.  The stellar IMF describes the relative distribution of stellar masses for a group of stars born at the same time.  In principle, measuring the IMF is a straight-forward exercise in counting the relative number of individual stars at different masses in a star cluster, i.e., a co-eval stellar population.  However, there are two important factors that complicate this measurement in practice.  The first is the need for resolved stars.  Even the high-angular resolution of the Hubble Space Telescope can only resolve individual stars for IMF measurements in the nearest few galaxies.  Second, measuring the IMF in more distant galaxies where individual stars cannot be resolved is challenging due to the strong degeneracy between SFR and the IMF.  As a result, state-of-the-art interpretation of distant galaxies still necessarily relies on the IMF measured in the very different, very local universe.
 
-As a consequence, the most studies of distant galaxies are forced to assume a universal IMF based on the very local universe.  While it is generally acknowledged this may be a poor approximation, few concrete alternatives exist.  The primary aim of this program is to resolve this tension by providing a path to directly measuring the IMF in distant galaxies.
-
-
-
-
-
-
-
-
-%The high mass stellar initial mass function (IMF) underpins virtually all of extragalactic astrophysics. Stars above a few solar masses are largely responsible for the chemical enrichment and spectral energy distribution blueward of the near-IR for all star-forming galaxies. Consequently, the exact numbers and mass distributions of high mass stars are central to the interpretation of integrated light from distant galaxies; chemical evolution models; the frequency of core-collapse supernovae; the evolution of star formation rates over cosmic time;  the efficiency of star formation on galactic scales; and the effects of stellar feedback on dark matter potentials (e.g., Leitherer et al.\ 1999, Bruzual \& Charlot 2003, Smartt 2009, Madau et al.\ 1996, Schmidt 1959, Kennicutt 1989, Leroy et al.\ 2008, Governato et al.\ 2010).
-%%\citep[e.g.,][]{lei99, bru03, sma09, mad96, sch59, ken89, ler08, gov10}.  
-%
-%Despite its widespread importance, the high mass IMF slope ($M\gtrsim$1\msun; e.g., Kroupa et al.\ 2001) remains poorly constrained.   Within the Local Group (LG), measurements of the IMF slope from resolved star counts exhibit scatter of $\sim$ 0.5 dex (e.g., Bastian et al.\ 2010). Similarly, IMF constraints from integrated light studies in nearby dwarf galaxies report conflicting evidence for systematically steep IMF slopes (e.g., Lee etl al.\ 2009, Meurer et al.\ 2009, Weisz et al.\ 2012) and flatter IMF slopes for galaxies with extremely high star formation rates and gas densities  (e.g., starbursts; Elmegreen 2005, Weidner et al.\ 2011).  Such uncertainties in the IMF slope introduce significant systematics into interpreting the higher redshift universe (e.g., Conroy et al.\ 2009), and are incapable of differentiating between star formation models that result in a universal or environmentally dependent IMF (e.g., McKee \& Ostriker 2007, Weidner et al.\ 2005). Each IMF model presents a drastically different view of how galaxies evolve (e.g., Haas et al.\ 2010), and carries significant implications for interpreting the current (e.g., GOODS) and the next generation (e.g., JWST, LSST) observations of the early universe (e.g., Dav\'{e} 2008, Zackrisson et al.\ 2011, Narayanan \& Dav\'{e} 2012).  
-%
-%To resolve uncertainty in the current high mass IMF, we are systematically measuring the IMF in M31 by counting resolved stars in stellar clusters that have been observed as part of the Panchromatic Hubble Andromeda Treasury program (PHAT; Dalcanton et al.\ 2012).  This multi-cycle HST program has acquired near-UV through near-IR imaging of individual stars in over $\sim$ 1000 young clusters  ($\lesssim$ 100 Myr; Johnson et al.\ 2012) in M31, providing a definitive dataset needed to both systematically constrain the IMF in an L$_{\star}$ galaxy and to anchor other IMF measurement techniques that can be applied to more distant environments where resolved star counts are not available (e.g., spectroscopy).  
-%
-%While our work in M31 will provide a single definitive IMF measurement, it is unlikely to address high mass IMF variations as a function of environment.  Like the rest of the LG, M31 contains only a handful regions with high gas densities and/or star formation rates that are common at higher redshifts and are associated with significant and systematic departures from a universal high mass IMF slope (e.g., Weidner et al.\ 2011).  Exploring the IMF in such extreme environments necessitates studying galaxies well beyond the LG, where individual stars can no longer be resolved, and the best constraints will come from integrated spectra of young star clusters.
-
-
-
-
-
-
-%Four years ago, we started the single most ambitious mapping project ever undertaken
-%with the Hubble Space Telescope (hereafter ``HST'') -- to produce a map of every
-%single luminous star in the nearby Andromeda Galaxy (``M31''), in ultraviolet
-%(UV), optical, and near-infrared (NIR) wavelengths. This survey -- ``The
-%Panchromatic Hubble Andromeda Treasury'' \citep[PHAT;][]{dalcanton2012b} -- has
-%produced multi-wavelength measurements for $>$0.1 billion stars, a number that is only rivaled by extensive surveys of our own Milky Way. The brightnesses and colors of these stars encode a wealth of information about the
-%history of the galaxy and the rich, detailed physics that drives stellar and
-%galactic evolution.  
-%
-%A primary scientific goal in quantifying the evolution of galaxies is
-%determining a galaxy's star formation history (SFH), defined as the temporal
-%evolution of the formation rate of stars (SFR). The increasing number of HST
-%programs that resolve individual stars of nearby systems has initiated
-%quantitative investigations of the SFHs of many systems \citep[\eg][]{Chiosi1989b,
-%Aparicio1990a, Mould1997f, Mighell1992a, Smecker-Hane1994a, Tolstoy1995a, Mighell1997b}.  However, virtually all such studies have been limited to small, chemically deficient systems that are not representative of most star formation in the universe.  Thus, by measuring the SFH of M31, our program will constrain the specific evolution of M31 and shed light into how the bulk of stars and galaxies in the universe formed and evolved.
-%
-%In practice, measuring SFHs is a challenging task.  Even with our extended wavelength coverage, degeneracies in the physical properties of stars such as age and chemical composition necessitate detailed modeling in order to accurately recover a SFH.  Additional modeling complexity arises due to factors such as observational effects, unknown amounts of obscuring dust and gas along the line-of-sight, and inherent uncertainties in the models of stellar physics, which all must be accounted for to ensure robust SFH measurements.  
-%
-%SFHs are measured through a statistical likelihood method that compares the 
-%distributions of colors and luminosities of observed stars with those generated from
-%synthetic stellar models. The main challenge in this process resides in selecting the
-%most likely SFH from among a set of plausible solutions, given the thousand of possible combinations of physical parameters (i.e., all permutations of age, metallicity, dust, etc.).  In addition, the robustness of the solution must also be quantified for random uncertainties due to the nature of the observations and systematic uncertainties due to the underlying stellar models.  
-%
-%Exploring this complex likelihood space demands computational power that can handle exponential increases in CPU time due to additional model parameters.  In our previous program, \xsede program (TG-AST130057) we narrowed down this vast space by focusing on the recent (within the last 500 Myr) SFHs of the Andromeda Galaxy.  This enabled a number of qualitatively new scientific investigations that we describe below.  However, these results are only limited to the most recent $\sim$ 4\% of the galaxy's age, and miss out on the vast majority of Andromeda's history. With this proposal, we are requesting the time needed to extend this analysis to spatially and temporally reconstruct the SFH for the remaining 96\% of Andromeda's history, allowing us to place it into a full cosmological context.
-%
-%The scientific scope of this project and data demands are unprecedented in astronomy.  Fortunately, \xsede provides many of the resources needed to facilitate
-%our science program.   Through extensive testing, both with our
-%existing local computational resources and with our previous \xsede allocation,
-%we have fully matched our science project to specific \xsede resources,
-%meticulously benchmarked our SFH analysis pipeline, and carefully mapped
-%pathways that will lead to publications in peer-reviewed journals. Below, we
-%briefly provide the scientific context of our program, our previous achievements,
-%and provide a detailed \xsede renewal allocation request in order to achieve our
-%project.  Our request is summarized in Table 1.
-
-
-%In practice, however, the likelihood of the data with a particular model can
-%only be calculated if one has the data, the uncertainties, and this particular
-%model fully specified. This last condition has led to the almost exclusive use
-%of parametric SFH in the literature. However, the best model according to the
-%likelihood is not necessarily a ``good'' approximation to the true SFH, nor even
-%a unique choice.  To derive a robust SFH with well-characterized uncertainties,
-%exploring the entire parameter space is an absolutely necessary step.
-
-
-%Unfortunately, the needed exploration requires computational power that
-%exponentially increases with the complexity of the models, as the volume of
-%parameter space that must be explored scales dramatically with an increasing
-%number of parameters.  Our previous \xsede program (TG-AST130057) allowed us to
-%successfully map the recent SFH in the Andromeda Galaxy, but only by drastically
-%reducing the number of parameters by restricting our analysis to a small
-%fraction of the age of the galaxy.  With this proposal, we are requesting the
-%time needed to extend this analysis to the entirety of cosmic time.
-
+The consequences of relying on a local IMF to understand interpret the light of distant galaxies is unclear.  On one hand, many theories of star formation predict that the the IMF should be influenced by local star formation conditions (e.g., gas density, star formation intensity).  Thus, the vigorous star formation in galaxies of the early universe may have different IMFs that those found locally.  On the other hand, direct star counts in the very local universe do not show evidence of an IMF that depends systematically on environment. This could either be because the IMF is ``universal'' or because the local universe has a limited dynamic range of star-forming environments.  Extensions of IMF studies to the slightly less local universe has providing tantalizing hints that the IMF does vary with environments; the integrated properties of nearby, low-mass galaxies are consistent with an environmentally dependent IMF.  However, this interpretation makes strong assumptions about the galaxy's SFH, which may also be capable of producing this effect.  In short, the IMF is challenging to measure and remains one of the largest sources of uncertainty in use of galaxies as cosmological tools.
 
 
 \section{Measuring the High-Mass IMF in the Distant Universe}
 
-Stars more massive than 1 \msun are entirely responsible for the observed luminosities and colors of star-forming galaxies.  Thus, it is this IMF in this mass range that we focus on measuring.  
+Here, we propose a qualitatively new method to measure the IMF in unresolved, distant galaxies.  Our focus is on the IMF for stars more massive that 1 \msun\ (the ``high-mass IMF''), which are entirely responsible for the SEDs of all star-forming galaxies.
 
-Our approach to measuring the IMF in distant galaxies is to use the integrated spectra of young star clusters. The full optical spectrum of a young ($<$ 50 Myr) star cluster contains significant information about the slope of the high mass IMF.  The shape of the blue continuum and size of spectral features (e.g., nebular emission, the Balmer jump) are sensitive to the slope of the high mass IMF, whereas conventional analysis of normalized spectrophotometric indices (e.g., Lick indices) are known to be insensitive to IMF variations \citep[e.g.,][]{kol08}.  We provide a more detailed description of this technique in \S \ref{XXX}.  
+Our approach to measuring the IMF in distant galaxies is to use the integrated spectra of young star clusters. The full optical spectrum of a young ($<$ 50 Myr) star cluster contains significant information about the slope of the high mass IMF.  The shape of the blue continuum and size of spectral features (e.g., nebular emission, the Balmer jump) are sensitive to the slope of the high mass IMF, whereas conventional analysis of normalized spectrophotometric indices (e.g., Lick indices) are known to be insensitive to IMF variations \citep[e.g.,][]{kol08}.  At the same time, by definition, star clusters are single age populations, which mitigates the SFH-IMF degeneracies that plague traditional integrated light studies of galaxies.  We provide a more detailed description of this technique in \S \ref{XXX}.  
 
 \subsection{Validating Spectroscopic IMF constraints in M31}
 
-The first phase of our program is to validate our spectroscopic IMF constraints against `gold standard' IMF measurements from resolved star counts.  As part of the Panchromatic Hubble Andromeda Treasury, a 4 year Hubble Space Telescope campaign to resolve stars in our closest neighbor, the Andromeda galaxy, PI Weisz has measured the IMF in $>$500 resolved star clusters.  Concurrently, we have also acquired high fidelity spectra of $\sim$ 50 of these same star clusters using the 6.5m Multi-Mirror Telescope in Arizona and the 10m Keck Telescope in Hawaii.  
+Our program is being conducted in two phases.  The first phase is development and validation of the methodology.  The technical details of the code development are described in \S \ref{XXX}.  
 
-We will measure the IMF of each cluster from its integrated spectrum and compare it to the ground-truth value derived from resolved star counts.  These two methods should provide consistent IMF measurements, providing key empirical validation of our approach.
+Following successful trials of the code on simulated data, we are now validating our spectroscopic IMF constraints against `gold standard' IMF measurements from resolved star counts.  As part of the Panchromatic Hubble Andromeda Treasury, a 4 year Hubble Space Telescope campaign to resolve stars in our closest neighbor, the Andromeda galaxy, PI Weisz has measured the IMF in $>$500 resolved star clusters.  At the same time, we have also acquired high fidelity spectra of $\sim$ 50 of these same star clusters using the 6.5m Multi-Mirror Telescope in Arizona and the 10m Keck Telescope in Hawaii.  
+
+Using our spectroscopic analysis tools, we are measuring the physical properties (e.g., age, mass, IMF) of each cluster from its integrated spectrum and comparing it to the ground-truth values derived from resolved star counts.  Consistency between these two sets of parameters will provide key validation of the spectroscopic technique. 
+
+
+
 
 
 \subsection{The First High-Mass IMF Measurement Outside the Local Group}
