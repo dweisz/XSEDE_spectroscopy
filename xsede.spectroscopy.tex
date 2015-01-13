@@ -38,30 +38,30 @@ Principle Investigator: Dr. Daniel Weisz\\
 University of Washington
 \end{center}
 
-{\small
-{\bf abstract:}
-Four years ago, we initiated the single most ambitious mapping project
-ever taken with the Hubble Space Telescope: to produce a map of every
-luminous star in the nearby Andromeda Galaxy (M31) in ultraviolet,
-optical, and near-infrared wavelengths. These $>$117,000,000 stars
-encode the history of the galaxy and the rich, detailed physics that
-drives stellar and galactic evolution. Using our first successful XSEDE
-program, our collaboration pioneered spatially mapping the recent
-history of star formation throughout M31, making a ``movie" of the past
-star formation of the galaxy during the last half a Gigayear.  We now
-propose to extend this movie back to the oldest ages by using a
-forward modeling approach that reproduces the observed colors and
-brightnesses of stars in small cells across the galaxy. We have
-developed both a parameterized model that responds to the added
-complexity of extending our age coverage, and an optimized search
-strategy that allows us to efficiently scan parameter space.  We have
-matched this project to specific XSEDE resources, have meticulously
-optimized our strategy, and have benchmarked our specific analysis
-pipeline.  Combining the computational power of XSEDE with the
-unprecedented number of stars cataloged by our large area survey will
-allow us to derive the most precise spatially-resolved star formation
-history of M31 throughout cosmic time, probing the earliest epochs of
-galaxy formation }
+%{\small
+%{\bf abstract:}
+%Four years ago, we initiated the single most ambitious mapping project
+%ever taken with the Hubble Space Telescope: to produce a map of every
+%luminous star in the nearby Andromeda Galaxy (M31) in ultraviolet,
+%optical, and near-infrared wavelengths. These $>$117,000,000 stars
+%encode the history of the galaxy and the rich, detailed physics that
+%drives stellar and galactic evolution. Using our first successful XSEDE
+%program, our collaboration pioneered spatially mapping the recent
+%history of star formation throughout M31, making a ``movie" of the past
+%star formation of the galaxy during the last half a Gigayear.  We now
+%propose to extend this movie back to the oldest ages by using a
+%forward modeling approach that reproduces the observed colors and
+%brightnesses of stars in small cells across the galaxy. We have
+%developed both a parameterized model that responds to the added
+%complexity of extending our age coverage, and an optimized search
+%strategy that allows us to efficiently scan parameter space.  We have
+%matched this project to specific XSEDE resources, have meticulously
+%optimized our strategy, and have benchmarked our specific analysis
+%pipeline.  Combining the computational power of XSEDE with the
+%unprecedented number of stars cataloged by our large area survey will
+%allow us to derive the most precise spatially-resolved star formation
+%history of M31 throughout cosmic time, probing the earliest epochs of
+%galaxy formation }
 
 
 \section{Background \& Motivation}
@@ -219,10 +219,33 @@ The resulting
 \subsection{Post-Processing}
 The stored walker positions are transferred to local servers to run our custom diagnostic and visualization software.  
 In cases where the walkers in the sampler have not converged to a stationary distribution in parameter space, we can restart the sampler from the last ensemble of positions, thus taking advantage of previous computations.  
-We are investigating techniques for robust online assesment of sampler convergence.
+We are investigating techniques for robust online assessment of sampler convergence.
 
 
 \section{Resource Request \& Justification}
+
+For our startup allocation, we requested time on both Trestles and Stampede, but were ultimately only given time on Trestles.  This proved to be problematic.  Jobs that began running on Trestles would die in the midst of sampling with no warning.  We spent over 2 months working with Trestles staff to identify the cause of the issue, but there has been no resolution to date.  We transferred $\sim$ 25\% of our Trestles allocation to Stampede and have found great success on Stampede.  Stampede is fully optimized for the problem at hand, outperforming any of our local resources at UW or Harvard by factors of $\sim$5-10 in time per likelihood call.  We therefore request use of Stampede for this program.
+
+Overall, we estimate that each cluster will require XXX SUs for full convergence.  This estimate includes both the initial Powell optimization as well as the burn-in and final MCMC chains.  For the 80 clusters in M31 and NGC~628 we request a total of XXX SUs.  We also request an additional 50k SUs for development of our generalized SFH modeling routines.  \textbf{XXX something about MICs XXX}.  Our request is summarized in Table \ref{tab1}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{cc|c}
+Project & Clusters & SUs \\
+\hline
+M31 & 80 & XXX \\
+NGC~628 & 30 & XXX \\
+Development & & XXX \\
+\hline Total SUs & & YYY \\
+\hline
+
+\end{tabular}
+\end{center}
+\label{tab1}
+\end{table}%
+
+
+Due to the relative small size of our data, we do not request any additional storage allocation on top of the standard file system provided on Stampede.  Longer term storage will be done at Washington and Harvard as needed.
 
 
 
@@ -234,13 +257,13 @@ We are investigating techniques for robust online assesment of sampler convergen
 
 \section{Team}
 
-There are three primary team members working on this project:
+There are three team members working on this project.  All three worked together in the Astronomy Department at the University of California at Santa Cruz in 2013 and 2014, prior to moving to their current institutions.
 
-\textbf{Daniel Weisz:} \\
+\textbf{Daniel Weisz:}  Principle Investigator and Lead Scientist.  PI Weisz is currently a Hubble Fellow at the University of Washington.  Previously he held postdoctoral research positions at UC Santa Cruz and the University of Washington.  The focus of his Hubble Fellowship project is on searching for variations in the high-mass IMF in the distant universe.  PI Weisz holds a Ph.D. in astrophysics from the University of Minnesota, has published 14 first author, including a seminal measurement of the high-mass IMF in M31, and over 75 total peer reviewed papers. He is an expert on local galaxies and star-formation, and is leading efforts to explore new ways to measure the high-mass IMF.  \\
 
-\textbf{Benjamin Johnson:} \\
+\textbf{Benjamin Johnson:} Co-Investigator and Lead Software Developer.  Co-I Johnson is currently a postdoctoral research at the Center for Astrophysics at Harvard University.  Co-I Johnson holds a Ph.D. in astronomy from Columbia University and has previously been a postdoctoral researcher at UC Santa Cruz The CNRS in Paris, and Cambridge University.  co-I Johnson is the author of three first author papers and 50 peer reviewed publications in total.  He is an expert in galaxy formation and evolution and in analysis of SED and galaxy spectroscopy.  \\
 
-\textbf{Charlie Conroy:}
+\textbf{Charlie Conroy:}  Co-Investigator and Creator of FSPS.  Co-I Conroy is a new assistant faculty member in the Department of Astronomy at Harvard University.  Previously he was an assistant faculty member at UC Santa Cruz and held postdoctoral positions at Princeton, Harvard, and the University of Chicago.  He holds a Ph.D. in astrophysics from Princeton.  Co-I Conroy is the author of FSPS, the spectral synthesis code that underpins the physical models of this project and has published several highly cited papers about modeling the integrated light in galaxies and variations in the low-mass IMF.  He is an expert in stellar and galactic astrophysics and in modeling the integrated light of galaxies. \\
 
 
 
