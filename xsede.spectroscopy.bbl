@@ -11,12 +11,24 @@
 \bibitem[{{Conroy}(2013)}]{conroy2013}
 {Conroy}, C. 2013, \araa, 51, 393
 
+\bibitem[{{Conroy} {et~al.}(2009)}]{fspsI} 
+Conroy, C., Gunn, J.~E., \& White, M.\ 2009, \apj, 699, 486 
+
+\bibitem[{{Conroy} \& {Gunn}(2010)}]{fspsIII} 
+Conroy, C., \& Gunn, J.~E.\ 2010, \apj, 712, 833 
+
 \bibitem[{{Cool} {et~al.}(2008){Cool}, {Eisenstein}, {Fan}, {Fukugita},
   {Jiang}, {Maraston}, {Meiksin}, {Schneider}, \& {Wake}}]{cool2008}
 {Cool}, R.~J., {Eisenstein}, D.~J., {Fan}, X., {et~al.} 2008, \apj, 682, 919
 
 \bibitem[{{Elmegreen} \& {Scalo}(2006)}]{elmegreen2006}
 {Elmegreen}, B.~G., \& {Scalo}, J. 2006, \apj, 636, 149
+
+\bibitem[{{Foreman-Mackey} {et~al.}(2013)}]{emcee} 
+Foreman-Mackey, D., Hogg, D.~W., Lang, D., \& Goodman, J. 2013, \pasp, 125, 306 
+
+\bibitem[{{Goodman} \& {Weare}(2010)}]{goodman_weare} 
+Goodman, J., \& Weare,  J. 2010, Commun. Appl. Math. Comput. Sci., 5, 65
 
 \bibitem[{{Koleva} {et~al.}(2008){Koleva}, {Prugniel}, {Ocvirk}, {Le Borgne},
   \& {Soubiran}}]{koleva2008}

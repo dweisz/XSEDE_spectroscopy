@@ -34,7 +34,7 @@
 
 
 \section{ Computational Methodology and Algorithms}
-We use the Flexible Stellar Population Synthesis \citep[FSPS][]{fsps} code for computing the spectrum and photometry of stellar populations, combined with the \texttt{emcee} code for MCMC sampling of posterior probability function to infer the physical parameters of observed stellar clusters.  Parallelization is achieved during the MCMC sampling.
+We use the Flexible Stellar Population Synthesis \citep[FSPS][]{fspsI, fspsIII} code for computing the spectrum and photometry of stellar populations, combined with the \texttt{emcee} code for MCMC sampling of posterior probability function to infer the physical parameters of observed stellar clusters.  Parallelization is achieved during the MCMC sampling.
 
 \subsection{FSPS}
 FSPS is a Fortran code used to generate flexible, state of the art models of the spectra of stellar populations.  It uses tabulated stellar isochrones and a user defined initial mass function (IMF) to calculate the number of stars with different physical properties.  Tabulated spectra are then combined with weighting by the relative number of stars of each spectral type.  In a separate step dust extinction is applied, and the spectrum is convolved with a Gaussian to model the spectrograph resolution.  All tables are loaded into memory at the start of the code, so that there is no I/O during code execution.
@@ -64,5 +64,24 @@ The \texttt{emcee} offers the option of load balancing the computation of the po
 In our tests the \texttt{emcee} algorithm scales well with the number of cores as long as the number of walkers is an integer multiple of the number of cores minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices.  Increasing the number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
 
 In Figure \ref{fig:scaling} we show the number of 
+
+\begin{thebibliography}
+
+\bibitem[{{Conroy} {et~al.}(2009)}]{fspsI} 
+Conroy, C., Gunn, J.~E., \& White, M.\ 2009, \apj, 699, 486 
+
+\bibitem[{{Conroy} \& {Gunn}(2010)}]{fspsIII} 
+Conroy, C., \& Gunn, J.~E.\ 2010, \apj, 712, 833 
+
+\bibitem[{{Foreman-Mackey} {et~al.}(2013)}]{emcee} 
+Foreman-Mackey, D., Hogg, D.~W., Lang, D., \& Goodman, J. 2013, \pasp, 125, 306 
+
+\bibitem[{{Goodman} \& {Weare}(2010)}]{goodman_weare} 
+Goodman, J., \& Weare,  J. 2010, Commun. Appl. Math. Comput. Sci., 5, 65
+
+\bibitem[{{Rasmussen} \& {Williams}(2006)}]{RW}
+Rasmussen, C.E., \& Williams, C.W., the MIT Press, 2006
+
+\end{thebibliography}
 
 \end{document}
