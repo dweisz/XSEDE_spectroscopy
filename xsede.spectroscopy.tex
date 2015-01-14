@@ -157,11 +157,11 @@ The model generation takes approximately 4s for one set of parameters on a singl
 \label{sec:calibration}
 The absolute flux calibration of spectroscopic data is generally inferior to that of photometric data.  
 While spectroscopic features such as absorption line depths provide substantial information about the stellar population parameters, large scale features in the observed spectrum and its overall normalization are often affected by substantial (multiplicative) calibration uncertainties. 
-Accuratelely marginalizing over the uncertain calibration uncertainties is critical for obtaining unbiased constraints on the IMF. 
+Accurately marginalizing over the uncertain calibration uncertainties is critical for obtaining unbiased constraints on the IMF. 
 We have therefore included a very flexible spectroscopic calibration model based on a combination of a low-order polynomial function of wavelength and a Gaussian Process.
 
 The low order polynomial corresponds to gross features in the calibration as a function of wavelength.
-The Gaussian Process corresponds to smaller scale deviations away from the polynomial, which can equivalently be thought of as covariant uncertainties on the fluxes of datapoints close in wavelength.
+The Gaussian Process corresponds to smaller scale deviations away from the polynomial, which can equivalently be thought of as covariant uncertainties on the fluxes of data points close in wavelength.
 
 The likelihood function that we are suing for the spectroscopic data is 
 \begin{eqnarray}\label{eq:spectroscopicLF}
@@ -207,7 +207,7 @@ These two log-likelihoods are summed and added to the log of the prior probabili
 
 
 \subsection{Optimization and MCMC Sampling}
-For each spectrum an intial round of optimization using Powell's method is used to find the approximate maximum of the posterior probability distribution. 
+For each spectrum an initial round of optimization using Powell's method is used to find the approximate maximum of the posterior probability distribution. 
 The optimization is started from as many positions as there are cores available in the job, with each core performing one realization of the optimization, so that for many cores the chances of being stuck in a local maximum are decreased.
 After the separate optimizations have each converged or reached a maximum number of iterations, the most probable of the final parameter positions is used as the central location for the MCMC sampling.  
 
@@ -276,7 +276,7 @@ There are three team members working on this project.  All three worked together
 
 \textbf{Benjamin Johnson:} Co-Investigator and Lead Software Developer.  Co-I Johnson is currently a postdoctoral research at the Center for Astrophysics at Harvard University.  Co-I Johnson holds a Ph.D. in astronomy from Columbia University and has previously been a postdoctoral researcher at UC Santa Cruz, the CNRS in Paris, and Cambridge University.  co-I Johnson is the author of five first author papers and 50 peer reviewed publications in total.  He is an expert in galaxy formation and evolution and in analysis of SED and galaxy spectroscopy.  \\
 
-\textbf{Charlie Conroy:}  Co-Investigator and Creator of FSPS.  Co-I Conroy is a new assistant faculty member in the Department of Astronomy at Harvard University.  Previously he was an assistant faculty member at UC Santa Cruz and held postdoctoral positions at Princeton, Harvard, and the University of Chicago.  He holds a Ph.D. in astrophysics from Princeton.  Co-I Conroy is the author of FSPS, the spectral synthesis code that underpins the physical models of this project and has published several highly cited papers about modeling the integrated light in galaxies and variations in the low-mass IMF.  He is an expert in stellar and galactic astrophysics and in modeling the integrated light of galaxies. \\
+\textbf{Charlie Conroy:}  Co-Investigator and Creator of FSPS.  Co-I Conroy is a new assistant faculty member in the Department of Astronomy at Harvard University.  Previously he was an assistant faculty member at UC Santa Cruz and a postdoctoral researcher at Harvard. He holds a Ph.D. in astrophysics from Princeton.  Co-I Conroy is the author of FSPS, the spectral synthesis code that underpins the physical models of this project and has published several highly cited papers about modeling the integrated light in galaxies and variations in the low-mass IMF.  He is an expert in stellar and galactic astrophysics and in modeling the integrated light of galaxies. \\
 
 
 
