@@ -136,7 +136,7 @@ This is accomplished in the framework of a likelihood function for the data give
 The high dimensionality of the parameter space, the desire to robustly infer degeneracies between the parameters, the presence of informative prior information about the parameters, and the need marginalize over ``nuisance'' parameters all lead us to a Bayesian methodology based on Markov Chain Monte Carlo (MCMC) sampling of the posterior probability distribution for the parameters. 
 The combination of photometric and spectroscopic information requires a flexible noise model to account for spectroscopic calibration uncertainties.
 
-The heart of our star cluster modeling code consists of the Flexible Stellar Population Synthesis code \citep[FSPS][]{fsps}, combined with a flexible spectroscopic calibration model.  
+The heart of our star cluster modeling code consists of the Flexible Stellar Population Synthesis code \citep[FSPS; written by co-I Conroy][]{fsps}, combined with a flexible spectroscopic calibration model.  
 For the MCMC sampling we are using the affine-invariant ensemble sampler implemented in \texttt{emcee} \citep{emcee} which enables the likelihood function evaluations to parallelized across a large number cores using \texttt{mpi4py}. 
 %The main calculations of \texttt{FSPS} are done in Fortran, but the code is wrapped in Python.  \texttt{emcee} is written in Python and uses \texttt{mpi4py} to distribute likelihood calcualtions across CPUs.
 
