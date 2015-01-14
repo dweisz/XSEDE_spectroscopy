@@ -242,17 +242,16 @@ The MCMC phase of the code completely dominates over the optimization phase, and
 
 For our startup allocation, we requested time on both Trestles and Stampede, but were ultimately only given time on Trestles.  This proved to be problematic.  Parallelize jobs that began running on Trestles would die in the midst of sampling with no warning.  We spent over 2 months working with Trestles staff to identify the cause of the issue, but there is still no resolution.  To facilitate scientific progress, we transferred $\sim$ 25\% of our Trestles allocation to Stampede and have found great success on Stampede.  Stampede is fully optimized for the problem at hand, outperforming any of our local resources at UW or Harvard by factors of $\sim$5-10 in time per likelihood call.  We therefore request use of Stampede for this program.
 
-Overall, we estimate that each cluster will require XXX SUs for full convergence.  This estimate includes both the initial Powell optimization as well as the burn-in and final MCMC chains.  For the 53 clusters in M31 and 28 in NGC~628 we request a total of XXX SUs. \textbf{XXX something about MICs XXX}.  Our request is summarized in Table \ref{tab1}.
+Overall, we estimate that each cluster will require an average of 9000 SUs for full convergence.  This estimate includes both the initial Powell optimization as well as the burn-in and final MCMC chains. For the 53 clusters in M31 and 28 in NGC~628 we request a total of 729000 SUs.  A breakdown of our request is summarized in Table \ref{tab1}.
 
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{cc|c}
 Project & Clusters & SUs \\
 \hline
-M31 & 53 & XXX \\
-NGC~628 & 28 & XXX \\
-Development & & XXX \\
-\hline Total SUs & & YYY \\
+M31 & 53 & 477000 \\
+NGC~628 & 28 & 252000 \\
+\hline Total SUs & & 729000 \\
 \hline
 
 \end{tabular}
