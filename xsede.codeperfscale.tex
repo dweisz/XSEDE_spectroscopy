@@ -1,22 +1,45 @@
 
-\documentclass{article}
-\usepackage{natbib}
-\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\documentclass[11pt,preprint]{aastex}
 
+%compact captions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[font=small,labelfont=bf, textfont=it, justification=justified]{caption}
+%\DeclareCaptionFormat{ruleformat}{\baselineskip0.2cm\hrulefill\\\noindent#1#2#3{\hrulefill}}
+%\captionsetup[figure]{format=ruleformat}
+\setlength{\textfloatsep}{0pt}
+%\setlength{\abovecaptionskip}{-10pt}
+\setlength{\floatsep}{2pt}
+
+\usepackage{verbatim}
+\usepackage{rotating}
+\usepackage{lscape}
+\usepackage{subfigure}
+\usepackage{natbib}
+\usepackage{arydshln}
+
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue, pdftex, bookmarks=true, linktocpage=true, hyperindex=true]{hyperref}
+\usepackage{breakurl}
+
+\providecommand{\xxxx}{{\color{red} ~XXXX~}}
+\providecommand{\xsede}{XSEDE~}
+\providecommand{\eg}{e.g.,~}
+\providecommand{\ie}{\textit{i.e.},~}
+\providecommand{\msun}{M$_\odot$~}
+
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
 
 \begin{document}
-
 
 
 \section{ Computational Methodology and Algorithms}
 We use the Flexible Stellar Population Synthesis \citep[FSPS][]{fsps} code for computing the spectrum and photometry of stellar populations, combined with the \texttt{emcee} code for MCMC sampling of posterior probability function to infer the physical parameters of observed stellar clusters.  Parallelization is achieved during the MCMC sampling.
 
 \subsection{FSPS}
-FSPS is a Fortran code used to generate flexible, state of the art models of the spectra of stellar populations.  It uses tabulated stellar isochrones and a user defined initial mass function (IMF) to calculate the number of stars with different physical properties.  Tabulated spectra are then combined with weighting by the relative number of stars of each spectral type.  In a separate step dust extinction is applied, and the spectrum is convolved with a Gaussian to model the spectrograph resolution.  All tables are loaded into memory at the start of the code, so that there is no I/O during code execution.  Efforts have been made to speed this code up as much as possible.
+FSPS is a Fortran code used to generate flexible, state of the art models of the spectra of stellar populations.  It uses tabulated stellar isochrones and a user defined initial mass function (IMF) to calculate the number of stars with different physical properties.  Tabulated spectra are then combined with weighting by the relative number of stars of each spectral type.  In a separate step dust extinction is applied, and the spectrum is convolved with a Gaussian to model the spectrograph resolution.  All tables are loaded into memory at the start of the code, so that there is no I/O during code execution.
 
-XXX Something here about compiler flags? XXX
-
-We use lightweight Python bindings to the Fortran code, generated with \texttt{f2py}.  We have tested that the Python bindings do not add significant computational time, which is dominated by interpolation and integration within the FSPS Fortran code.
+We use lightweight Python bindings to the Fortran code, generated with \texttt{f2py}.  We have tested that the Python bindings do not add significant computational time, which is dominated by interpolation and integration within the FSPS Fortran code.  On Stampede model generation takes approximately 4s on a single core, and FSPS model generation thus dominates the computational time required for calculation of posterior probabilities and the code run-time in general. Significant efforts have been made to speed up FSPS as much as possible.
 
 \subsection{Flexible calibration model}
 For real data it is necessary to model the uncertain spectral calibration.  To do this we use a polynomial combined with a Gaussian Process \citep[e.g.,][]{RW} to model the covariance between the fluxes at nearby wavelengths.  Inversion of the covariance matrix is accomplished via \texttt{Scipy}'s Cholesky decomposition algorithms, which in turn use the Intel MKL library.
@@ -35,9 +58,11 @@ We are investigating techniques for robust online assessment of sampler converge
 
 
 \subsubsection{Load Balancing}
-The \texttt{emcee} offers the option of load balancing the computation of the posterior probabilities when there are more than twice as many walkers as there are processors.  However, we have found that the time for the posterior probability computation does not vary by more than 10\%, and cannot be predicted easily. Thus load balancing does not provide a significant speedup. 
+The \texttt{emcee} offers the option of load balancing the computation of the posterior probabilities when there are more than twice as many walkers as there are cores.  However, we have found that the time for the posterior probability computation does not vary by more than 10\%, and cannot be predicted easily. Thus load balancing does not provide a significant speedup. 
 
 \section{Benchmarks and Scaling}
-In our tests the \texttt{emcee} algorithm scales well with the number of processors as long as the number of walkers is an integer multiple of the number of processors minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices.  Increasing the number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
+In our tests the \texttt{emcee} algorithm scales well with the number of cores as long as the number of walkers is an integer multiple of the number of cores minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices.  Increasing the number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
+
+In Figure \ref{fig:scaling} we show the number of 
 
 \end{document}
