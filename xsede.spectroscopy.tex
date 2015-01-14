@@ -94,7 +94,7 @@ Our approach to measuring the IMF in distant galaxies is through their young sta
 
 For most distinct clusters, we are measuring the IMF using their spectrum.  The full optical spectrum of a young ($<$ 50 Myr) star cluster contains significant information about the slope of the high mass IMF.  The shape of the blue continuum and size of spectral features (e.g., nebular emission, the Balmer jump) are sensitive to the slope of the high mass IMF.  In comparison, traditional analysis of star clusters relies on isolating key absorption features and modeling their relative intensities.  This type of spectrophotometric index analysis is well-known to be insensitive to the IMF\citep[e.g.,][]{kol08}, and thus has never been used as means to investigate the IMF.  
 
-In contrast, our approach is to forward model the optical spectrum of a young star cluster.  That is, we use state-of-the-art population stellar population synthesis software to construct the expected spectrum of a young cluster and build a separate noise model to account for observational uncertainties introduced by the resolution of the telescope, inefficient of the charged-coupling device, atmospheric turbulence, sky line emission, etc.  Many of these noise features are non-linear and require involved noise models (e.g., Gaussian Processes) as we described in \S \ref{XXX}.  The result of this new approach to modeling is that we will, for the first time, be able to directly measure the IMF in star-forming galaxies outside the very local universe.  
+In contrast, our approach is to forward model the optical spectrum of a young star cluster.  That is, we use state-of-the-art population stellar population synthesis software to construct the expected spectrum of a young cluster and build a separate noise model to account for observational uncertainties introduced by the resolution of the telescope, inefficient of the charged-coupling device, atmospheric turbulence, sky line emission, etc.  Many of these noise features are non-linear and require involved noise models (e.g., Gaussian Processes) as we described in \S \ref{sec:calibration}.  The result of this new approach to modeling is that we will, for the first time, be able to directly measure the IMF in star-forming galaxies outside the very local universe.  
 
 \subsection{Validating Spectroscopic IMF constraints in M31}
 
@@ -125,107 +125,127 @@ The long-term scientific impact of our programs is potentially transformative.  
 
 \section{Methodology}
 
-Information about the properties of a stellar cluster -- its age, metallicity, total stellar mass, and reddening by dust among many others -- is contained in the detailed spectrum and the broadband SED of the cluster. 
+Information about the properties of a stellar cluster -- its age, metallicity, total stellar mass, redshift, and reddening by dust among many others -- is contained in the detailed spectrum and the broadband SED of the cluster. 
 Our code performs inference of these star cluster parameters by comparing model spectra and photometry to observations for a broad range of model parameters.  
 This is accomplished in the framework of a likelihood function for the data given the model parameters.  
 
-The high dimensionality of the parameter space, the desire to robustly infer degeneracies between the parameters, the presence of informative prior information about the parameters, and the need marginalize over ``nuisance'' parameters all lead us to a Bayesian methodology based on Markov Chain Monte Carlo (MCMC) sampling of the likelihood function. 
+The high dimensionality of the parameter space, the desire to robustly infer degeneracies between the parameters, the presence of informative prior information about the parameters, and the need marginalize over ``nuisance'' parameters all lead us to a Bayesian methodology based on Markov Chain Monte Carlo (MCMC) sampling of the posterior probability distribution for the parameters. 
 The combination of photometric and spectroscopic information requires a flexible noise model to account for spectroscopic calibration uncertainties.
 
 The heart of our star cluster modeling code consists of the \texttt{FSPS} stellar population synthesis code \citep{fsps}, combined with a flexible spectroscopic calibration model.  
 For the MCMC sampling we are using the affine-invariant ensemble sampler \texttt{emcee} \citep{emcee} which enables the likelihood function evaluations to parallelized across a large number CPUs. 
-The main calculations of \texttt{FSPS} are done in Fortran, but the code is wrapped in Python.  \texttt{emcee} is written in Python and uses \texttt{mpi4py} to distribute likelihood calcualtions across CPUs.
+%The main calculations of \texttt{FSPS} are done in Fortran, but the code is wrapped in Python.  \texttt{emcee} is written in Python and uses \texttt{mpi4py} to distribute likelihood calcualtions across CPUs.
 
 \subsection{Star cluster model}
 For each set of model parameters a star cluster model must be generated and compared to the data. 
-The star cluster model is comprised of a physical model for the spectrum and broadband SED of and a model for the instrumental calibration.  
-The physical model is generated using the FSPS stellar population synthesis code, which combines tabulated model stellar spectra according to weights determined from tabulated stellar evolutionary tracks and an initial mass function.  
-The FSPS code additionally calculates the reddening due to dust and convolves the spectrum with a broadening function representing the instrumental spectral resolution.
+%The star cluster model is comprised of a physical model for the spectrum and broadband SED of and a model for the instrumental calibration.  
+The physical model is generated using the state-of-the-art FSPS stellar population synthesis code.
+FSPS combines tabulated model stellar spectra according to weights determined from tabulated stellar evolutionary tracks and an IMF.
+The tabulated data are loaded into memory at the start of program execution, and there is very little disk I/O in our entire pipeline.
+The FSPS code additionally calculates the reddening due to dust and convolves the spectrum with a broadening function representing the instrumental spectral resolution.  
+Finally, broadband photometry is generated by projecting the model spectrum onto the observational filters
 
-The model generation takes approximately 1s on 
 
-\subsubsection{Calibration modeling}
+%The model generation takes approximately 1s on 
+
+\subsection{Calibration modeling}
+\label{sec:calibration}
 The absolute flux calibration of spectroscopic data is generally inferior to that of photometric data.  
 While spectroscopic features such as absorption line depths provide substantial information about the stellar population parameters, large scale features in the observed spectrum and its overall normalization are often affected by substantial (multiplicative) calibration uncertainties. 
-In order to simultaneously model the observed spectra and the photometry we have included a very flexible spectroscopic calibration model based on a combination of a low-order polynomial function of wavelength and a Gaussian Process.
+Accuratelely marginalizing over the uncertain calibration uncertainties is critical for obtaining unbiased constraints on the IMF. 
+We have therefore included a very flexible spectroscopic calibration model based on a combination of a low-order polynomial function of wavelength and a Gaussian Process.
 
-The low order polynomial corresponds to gross features in the calibration as a function of wavelength, while the Gaussian Process corresponds to smaller scale deviations away from the polynomial, which can be thought of as covariant uncertainties on the fluxes of datapoints close in wavelength.
+The low order polynomial corresponds to gross features in the calibration as a function of wavelength.
+The Gaussian Process corresponds to smaller scale deviations away from the polynomial, which can equivalently be thought of as covariant uncertainties on the fluxes of datapoints close in wavelength.
 
-In detail, the likelihood function that we are using for the photometry is 
-\begin{eqnarray}\label{eq:photometricLF}
-\ln p(d\given\theta,s^2) &=& -\frac{1}{2}\,\sum_{n=1}^N \left[\frac{[d_n - \mu_n(\theta)]^2}{[\sigma_n^2 + s^2]} + \ln(2\pi\,[\sigma_n^2 + s^2]) \right]
-\quad .
-\end{eqnarray}
-where $\theta$ are the physical parameters of the cluster,
-$d$ are the broadband photometric measurements,
-made up of $N$ values $d_n$,
-$\mu(\theta)$ are the modeled photometry,
-made up of $N$ values $\mu_n(\theta)$, and
-the $\sigma_n^2$ are the observational noise variances.
 The likelihood function that we are suing for the spectroscopic data is 
 \begin{eqnarray}\label{eq:spectroscopicLF}
-\ln p(d\given\theta,\alpha) &=& -\frac{1}{2}\,\left[\transpose{\Delta}\,C^{-1}\,\Delta + \ln([2\pi]^N\,\det{C}) \right]
+\ln p(s\given\theta,\alpha) &=& -\frac{1}{2}\,\left[\transpose{\Delta}\,C^{-1}\,\Delta + \ln([2\pi]^N\,\det{C}) \right]
 \\
-\Delta &\equiv& \ln d - \ln \mu(\theta) - f(\alpha) 
+\Delta &\equiv& \ln s - \ln \mu(\theta) - f(\alpha) 
 \\
-C_{nn'} &\equiv& [\hat{\sigma}_n^2 + s^2]\,\delta_{nn'} +
+C_{nn'} &\equiv& \sigma_n^2 \,\delta_{nn'} +
 K_\alpha(\lambda_n - \lambda_{n'})
-\\
-\hat{\sigma_n} & = &\sigma_n/d
+%\\
+%\hat{\sigma_n} & = &\sigma_n/d
 \quad ,
 \end{eqnarray}
-where $\alpha$ are the (nuisance) calibration parameters
-(which determine the jitter, the shape of the polynomial calibration vector and the kernel function),
-$\Delta$ is a residual column vector,
-$f(\alpha)$ is a calibration column vector,
+where $s$ is the the observed spectrum as a vector,
+$\theta$ are the physical parameters of the cluster,
+$\alpha$ are the (nuisance) calibration parameters
+(which determine the the shape of the polynomial calibration vector and the covariance kernel function),
+$\Delta$ is a residual vector,
+$\mu(\theta)$ is the modeled spectrum as a vector,
+$f(\alpha)$ is the polynomial calibration vector,
 $C$ is the Gaussian Process covariance matrix,
 made up of $N^2$ values $C_{nn'}$,
 $K_\alpha$ is a kernel function that sets the wavelength scale and
 amplitude of the residual calibration issues,
-$\hat{\sigma}_n$ are the fractional uncertainties of the data,
+$\sigma_n$ are the fractional uncertainties of the data,
 and each $\lambda_n$ is the wavelength of spectral pixel $n$.
-These two likelihoods are summed and multiplied by the prior probabilities for each parameter ${\theta, \alpha}$ to determine the posterior probability.
-
 We invert the $N \times N$ matrix $C$ using Cholesky decompositions, as implemented in \texttt{Scipy}. 
 For our data, N$\sim 2500$.  
 On Stampede the matrix inversion takes approximately 1s on a single processor, using the linked Intel MKL library.
 
-\subsection{MCMC}
-For our MCMC sampling of the parameters ${\theta, \alpha}$ we are using the code \texttt{emcee}.  
+Meanwhile, the likelihood function that we are using for the photometry is more straightforward, 
+\begin{eqnarray}\label{eq:photometricLF}
+\ln p(d\given\theta,j^2) &=& -\frac{1}{2}\,\sum_{n=1}^N \left[\frac{[d_n - \mu_n(\theta)]^2}{[\sigma_n^2 + j^2]} + \ln(2\pi\,[\sigma_n^2 + j^2]) \right]
+\quad ,
+\end{eqnarray}
+where $d_n$ are the $N$ broadband photometric measurements,
+$\theta$ are again the physical parameters of the cluster,
+$\mu(\theta)$ are the modeled photometry,
+made up of $N$ values $\mu_n(\theta)$,
+the $\sigma_n^2$ are the observational noise variances,
+and $j$ is a parameter allowing for the possibility of additional noise above that reported.
+These two likelihoods are summed and multiplied by the prior probabilities for each parameter ${\theta, \alpha}$ to determine the posterior probability.
+
+
+\subsection{MCMC Sampling}
+For our MCMC sampling of the $\sim 20$ parameters $\{\theta, \alpha\}$ we are using the code \texttt{emcee}.  
 This code implements an affine-invariant ensemble sampler \citep{goodman_weare} which is based on an ensemble of ``walkers'' in parameter space that, at each iteration of the sampler, are used to generate new proposal positions in parameter space.  
 This eliminates the need for hand-tuning of the proposal length scales.  
 Additionally, the likelihood calculations for the different walkers at a given iteration can be simply parallelized.
+
+As described in the code performance document, all parallelization of the code is acheived by parallelizing the likelihood calls in \texttt{emcee}, and extremely good parallel efficiency can be obtained when the ensemble of ``walkers'' is large.
+
+
+%In cases where the walkers in the sampler have not converged to a stationary distribution in parameter space, we can restart the sampler from the last ensemble of positions, thus taking advantage of previous computations.  
+%We are investigating techniques for robust online assessment of sampler convergence.
 
 %Parallelization is accomplished as follows. 
 %The parameter position of each walker is sent to a separate processor for the likelihood evaluation. 
 %The likelihoods are then collected and used to generate new proposed parameter positions for each walker, and a new iteration is begun.  
 %The density of walker positions constitutes an approximation to the posterior probability distribution for the parameters.
 
-\section{Justification of Resources}
-Our tests indicate that for each spectrum approximately X iterations of Y walkers are required for convergence of a sampler
+%\section{Justification of Resources Requested}
+%Our tests indicate that for each spectrum approximately X iterations of Y walkers are required for convergence of a sampler.  This number of likelihood calculations requires 
 
-\subsection{Observational Data}
-Preprocessing and uploading to Stampede
+%The observational data is preprocessed using custom software on local compute resources.
 
-\subsection{Job submission}
-We will submit a separate job for each cluster spectrum. normal queue
 
-\subsection{Job details}
-Each CPU loads a copy of the likelihood function into memory, including the FSPS star cluster modelling code and the spectroscopic calibration model.
+%\subsection{Observational Data}
+%Preprocessing and uploading to Stampede
 
-For each spectrum, an initial round of optimization of the likelihood function (actually the posterior probability function) is used to find the approximate maximum likelihood. 
-This optimization uses Powell's method as implemented in \texttt{Scipy}, though we are investigating more efficient algorithms. 
-The optimization is started from as many positions as there are CPUs available in the job, with each CPU  performing one realization of the optimization.  
-Thus while increasing the number of processors does not speed up this phase of the code, it does substantially reduce the chance of becoming tapped in a local minimum.
+%\subsection{Job submission}
+%We will submit a separate job for each cluster spectrum. normal queue
 
-After the separate optimizations have each converged or reached a maximum number of iterations, the parameters corresponding to the global minimum are used as a central location for the MCMC sampling.
-An ensemble of ``walkers'' is then generated centered on this location and evolved forward.  
-The resulting 
+%\subsection{Job details}
+%Each CPU loads a copy of the likelihood function into memory, including the FSPS star cluster modelling code and the spectroscopic calibration model.
 
-\subsection{Post-Processing}
-The stored walker positions are transferred to local servers to run our custom diagnostic and visualization software.  
-In cases where the walkers in the sampler have not converged to a stationary distribution in parameter space, we can restart the sampler from the last ensemble of positions, thus taking advantage of previous computations.  
-We are investigating techniques for robust online assessment of sampler convergence.
+%For each spectrum, an initial round of optimization of the likelihood function (actually the posterior probability function) is used to find the approximate maximum likelihood. 
+%This optimization uses Powell's method as implemented in \texttt{Scipy}, though we are investigating more efficient algorithms. 
+%The optimization is started from as many positions as there are CPUs available in the job, with each CPU  performing one realization of the optimization.  
+%Thus while increasing the number of processors does not speed up this phase of the code, it does substantially reduce the chance of becoming tapped in a local minimum.
+
+%After the separate optimizations have each converged or reached a maximum number of iterations, the parameters corresponding to the global minimum are used as a central location for the MCMC sampling.
+%An ensemble of ``walkers'' is then generated centered on this location and evolved forward.  
+%The resulting 
+
+%\subsection{Post-Processing}
+%The stored walker positions are transferred to local servers to run our custom diagnostic and visualization software.  
+%In cases where the walkers in the sampler have not converged to a stationary distribution in parameter space, we can restart the sampler from the last ensemble of positions, thus taking advantage of previous computations.  
+%We are investigating techniques for robust online assessment of sampler convergence.
 
 
 \section{Resource Request \& Justification}
@@ -267,7 +287,7 @@ There are three team members working on this project.  All three worked together
 
 \textbf{Daniel Weisz:}  Principle Investigator and Lead Scientist.  PI Weisz is currently a Hubble Fellow at the University of Washington.  Previously he held postdoctoral research positions at UC Santa Cruz and the University of Washington.  The focus of his Hubble Fellowship project is on searching for variations in the high-mass IMF in the distant universe.  PI Weisz holds a Ph.D. in astrophysics from the University of Minnesota, has published 14 first author, including a seminal measurement of the high-mass IMF in M31, and over 75 total peer reviewed papers. He is an expert on local galaxies and star-formation, and is leading efforts to explore new ways to measure the high-mass IMF.  \\
 
-\textbf{Benjamin Johnson:} Co-Investigator and Lead Software Developer.  Co-I Johnson is currently a postdoctoral research at the Center for Astrophysics at Harvard University.  Co-I Johnson holds a Ph.D. in astronomy from Columbia University and has previously been a postdoctoral researcher at UC Santa Cruz The CNRS in Paris, and Cambridge University.  co-I Johnson is the author of three first author papers and 50 peer reviewed publications in total.  He is an expert in galaxy formation and evolution and in analysis of SED and galaxy spectroscopy.  \\
+\textbf{Benjamin Johnson:} Co-Investigator and Lead Software Developer.  Co-I Johnson is currently a postdoctoral research at the Center for Astrophysics at Harvard University.  Co-I Johnson holds a Ph.D. in astronomy from Columbia University and has previously been a postdoctoral researcher at UC Santa Cruz, the CNRS in Paris, and Cambridge University.  co-I Johnson is the author of five first author papers and 50 peer reviewed publications in total.  He is an expert in galaxy formation and evolution and in analysis of SED and galaxy spectroscopy.  \\
 
 \textbf{Charlie Conroy:}  Co-Investigator and Creator of FSPS.  Co-I Conroy is a new assistant faculty member in the Department of Astronomy at Harvard University.  Previously he was an assistant faculty member at UC Santa Cruz and held postdoctoral positions at Princeton, Harvard, and the University of Chicago.  He holds a Ph.D. in astrophysics from Princeton.  Co-I Conroy is the author of FSPS, the spectral synthesis code that underpins the physical models of this project and has published several highly cited papers about modeling the integrated light in galaxies and variations in the low-mass IMF.  He is an expert in stellar and galactic astrophysics and in modeling the integrated light of galaxies. \\
 
