@@ -46,7 +46,7 @@ For real data it is necessary to model the uncertain spectral calibration.  To d
 
 \subsection{MCMC sampling: \texttt{emcee}}
 \label{sec:emcee}
-\texttt{emcee} is a Python implementation of the affine-invariant ensemble MCMC sampling scheme of \cite{goodman_weare}.  It opertes via an ensemble of ``walkers'' that move in the model parameter space, where the new parameter position for a each walker is based on the posterior probability of the parameters at other walker positions.   This process is iterated until the distribution of walker positions converges to a stable distribution, which is an approximation to the $N_{parameters}$-dimensional posterior probability distribution. The number of iterations, $N_{iterations}$, required depends on the initial positions of the walkers, the number of walkers $N_{walkers}$, and the quality of the data.  The total number of posterior probability evalutions is $N_{walkers} \times N_{iterations}$.
+\texttt{emcee} is a Python implementation of the affine-invariant ensemble MCMC sampling scheme of \cite{goodman_weare}.  It opertes via an ensemble of ``walkers'' that move in the model parameter space, where the new parameter position for a each walker is based on the posterior probability of the parameters at other walker positions.   This process is iterated until the distribution of walker positions converges to a stable distribution, which is an approximation to the $N_{parameters}$-dimensional posterior probability distribution. The number of iterations, $N_{iterations}$, required depends on the initial positions of the walkers, the number of walkers $N_{walkers}$, and the quality of the data.  The total number of posterior probability or likelihood evalutions is $N_{likelihood} = N_{walkers} \times N_{iterations}$.
 
 In the \texttt{emcee} implementation, at each iteration the ensemble of walkers is split in 2 equal subsamples. The posterior probabilities at the positions of the walkers in one subsample are computed in parallel, and are then used to propose new parameter positions for the other subsample. Using \texttt{mpi4py}, MPI communication of parameter position vectors and scalar posterior probabilities between cores takes place twice per iteration. Since the computation of the posterior probabilities dominates the total run time of the code, large speedups can be obtained by increasing the number of cores up to $N_{walkers}/2 + 1$.  
 
@@ -60,14 +60,18 @@ We are investigating techniques for robust online assessment of sampler converge
 \subsubsection{Load Balancing}
 The \texttt{emcee} offers the option of load balancing the computation of the posterior probabilities when there are more than twice as many walkers as there are cores.  However, we have found that the time for the posterior probability computation does not vary by more than 10\%, and cannot be predicted easily. Thus load balancing does not provide a significant speedup. 
 
+If the number of walkers is not a $K>2$ integer multiple of $N_{cores}-1$ then some processors will not be utilized effictively.  In our code the number of walkers is determined at run time from the number of processors to insure maximum efficiency.
+
 \section{Benchmarks and Scaling}
 In our tests the \texttt{emcee} algorithm scales well with the number of cores as long as the number of walkers is an integer multiple of the number of cores minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices. A large number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
 
-In Figure \ref{fig:scaling} we show the number of likelihood calculations made divided by the wall time required divided by the number of cores as a function of the number of cores for several test runs.  These test runs used simplified, lower-resolution spectral models and no matrix inversions.  We see that the performance is not a strong function of the number of cores.
+In Figure \ref{fig:scaling} we show scaling reults for runs on Stampede.  This figure shows the number of total number of likelihood calculations made, $N_{likelihood}$, divided by the wall time required as a function of the number of cores for several test runs.  These test runs used simplified, lower-resolution spectral models.  For some of them we did not perform matrix inversions for the likelihood evaluation, resulting in approximate $2 \times$ faster individual likelihood calculations.  The number of likelihoods evaluated per second scales almost exactly with the number of cores, for a variety of total probalem sizes $N_{likelihood}$.
 
 \begin{figure}
-\includegraphics{efficiency.pdf}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{efficiency.pdf}
 \caption{The number of likelihood calls per second per core, as a function of the number of cores.  The color and symbol size encodes the total problem size, defined as the total number of likelihood calls requested.  Circles are for a restricted model with fast spectral model generation and no matrix inversions, stars are for the fast model generation but with matrix inversion for the Gaussian Process calibration model. \label{fig:scaling}}
+\end{center}
 \end{figure}
 \begin{thebibliography}
 
