@@ -70,7 +70,7 @@ In Figure \ref{fig:scaling} we show scaling reults for runs on Stampede.  This f
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.8\textwidth]{efficiency.pdf}
-\caption{The number of likelihood calls per second per core, as a function of the number of cores.  The color and symbol size encodes the total problem size, defined as the total number of likelihood calls requested.  Circles are for a restricted model with fast spectral model generation and no matrix inversions, stars are for the fast model generation but with matrix inversion for the Gaussian Process calibration model. \label{fig:scaling}}
+\caption{Stampede scaling tests. The number of likelihood calls per second as a function of the number of cores.  The symbol color and size encodes the total problem size, defined as the total number of likelihood calls requested.  Circles are for a restricted model with fast spectral model generation and no matrix inversions, stars are for the fast model generation but with matrix inversion for the Gaussian Process calibration model, resulting in longer times for each likelihood call. \label{fig:scaling}}
 \end{center}
 \end{figure}
 \begin{thebibliography}
