@@ -61,10 +61,14 @@ We are investigating techniques for robust online assessment of sampler converge
 The \texttt{emcee} offers the option of load balancing the computation of the posterior probabilities when there are more than twice as many walkers as there are cores.  However, we have found that the time for the posterior probability computation does not vary by more than 10\%, and cannot be predicted easily. Thus load balancing does not provide a significant speedup. 
 
 \section{Benchmarks and Scaling}
-In our tests the \texttt{emcee} algorithm scales well with the number of cores as long as the number of walkers is an integer multiple of the number of cores minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices.  Increasing the number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
+In our tests the \texttt{emcee} algorithm scales well with the number of cores as long as the number of walkers is an integer multiple of the number of cores minus one.  This is because the work is completely dominated by the calculation of the of the posterior probabilites, which requires both generation of the stellar population model and inversion of $\sim 2\mbox{k} \times 2\mbox{k}$ matrices. A large number of walkers also decreases the number of iterations required for convergence, keeping the total problem size fixed (or even making it smaller)
 
-In Figure \ref{fig:scaling} we show the number of 
+In Figure \ref{fig:scaling} we show the number of likelihood calculations made divided by the wall time required divided by the number of cores as a function of the number of cores for several test runs.  These test runs used simplified, lower-resolution spectral models and no matrix inversions.  We see that the performance is not a strong function of the number of cores.
 
+\begin{figure}
+\includegraphics{efficiency.pdf}
+\caption{The number of likelihood calls per second per core, as a function of the number of cores.  The color and symbol size encodes the total problem size, defined as the total number of likelihood calls requested.  Circles are for a restricted model with fast spectral model generation and no matrix inversions, stars are for the fast model generation but with matrix inversion for the Gaussian Process calibration model. \label{fig:scaling}}
+\end{figure}
 \begin{thebibliography}
 
 \bibitem[{{Conroy} {et~al.}(2009)}]{fspsI} 
